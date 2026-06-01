@@ -71,7 +71,7 @@ cat resolved.txt | httpx -silent -threads 200 \
   -tech-detect \
   -content-length \
   -web-server \
-  -server
+  -server \
   -ip \
   -cname \
   -location \

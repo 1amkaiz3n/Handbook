@@ -73,7 +73,7 @@ dirsearch -u https://target.com -e php,txt,zip,html -t 60
 **ffuf :**
 
 ```bash
-ffuf -w /wordlists/SecLists/Discovery/Web-Content/common.txt:FUZZ -u https://api.onevasco.com/FUZZ 
+ffuf -w /wordlists/SecLists/Discovery/Web-Content/wp-karrab.txt:FUZZ -u https://api.onevasco.com/FUZZ 
 ```
 
 Important directories :
