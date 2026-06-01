@@ -1,38 +1,54 @@
 # WPScan
 
-## Enumeraion
 
+## Enumerate all plugins with known vulnerabilities
 ```bash
-# Enumerate all plugins with known vulnerabilities
-## baseline
-wpscan --url https://blog.onevasco.com -e vp --plugins-detection mixed --api-token zBsi404GGCMKGzTraiEsSsQsFXCsUVWmaDUsn3EPuKc
+wpscan --url https://target.com -e vp --plugins-detection mixed --api-token <API_TOKEN>
+```
 
 ## deep scan
-wpscan --url https://blog.onevasco.com -e ap --plugins-detection aggressive
+```bash
+wpscan --url https://target.com -e ap --plugins-detection aggressive
+```
 
-# Enumerate all plugins in our database (could take a very long time)
-wpscan --url https://blog.onevasco.com -e ap --plugins-detection mixed --api-token zBsi404GGCMKGzTraiEsSsFXCsUVWmaDUsn3EPuKc
+## Enumerate all plugins in our database (could take a very long time)
+```bash
+wpscan --url https://target.com -e ap --plugins-detection mixed --api-token <API_TOKEN>
+```
 
-# Enumerate theme
-wpscan --url https://blog.onevasco.com --enumerate t 
+## Enumerate theme
+```bash
+wpscan --url https://target.com --enumerate t 
+```
 
-# Enumerate plugin
-wpscan --url https://blog.onevasco.com --enumerate p
-wpscan --url https://blog.onevasco.com --enumerate ap
+## Enumerate plugin
+```bash
+wpscan --url https://target.com --enumerate p
+wpscan --url https://target.com --enumerate ap
+```
 
-# Enumerating usernames
-wpscan --url https://blog.onevasco.com --enumerate u 
+## Enumerating usernames
+```bash
+wpscan --url https://target.com --enumerate u 
+```
 
-# Enumerating a range of usernames
-wpscan --url https://blog.onevasco.com --enumerate u1-100
+## Enumerating a range of usernames
+```bash
+wpscan --url https://target.com --enumerate u1-100
+```
 
+## Enumerate vuln plugin,plugni,theme,user
+```bash
+wpscan --url https://target.com --enumerate vp,p,t,u
+```
 
-# Enumerate vuln plugin,plugni,theme,user
-wpscan --url https://blog.onevasco.com --enumerate vp,p,t,u
+## Password brute force attack
+```bash
+wpscan --url https://target.com -e u --passwords /wordlists/SecLists/password/Common-Credentials/best1050.txt
+```
 
-# Password brute force attack
-wpscan --url https://blog.onevasco.com -e u --passwords /wordlists/SecLists/password/Common-Credentials/best1050.txt
+## BruteForce dengan username telah di ketahui
 
-# BruteForce degna usernme telah di ketahui
-wpscan --url https://blog.onevasco.com --usernames ovauthor --passwords /wordlists/SecLists/password/Common-Credentials/best1050.txt
+```bash
+wpscan --url https://target.com --usernames <username> --passwords /wordlists/SecLists/password/Common-Credentials/best1050.txt
 ```

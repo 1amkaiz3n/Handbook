@@ -140,7 +140,7 @@ site:*.target.com (ext:doc OR ext:docx OR ext:odt OR ext:pdf OR ext:rtf OR ext:p
 ## Hidden Parameter Discovery
 
 ```bash
-arjun -u https://target.com/endpoint.php -oT arjun_output.txt -t 10 --rate-limit 10 --passive -m GET,POST --headers "User-Agent: Mozilla/5.0"
+arjun -u https://target.com/endpoint.php -oT arjun_output.txt -t 10 --rate-limit 10 -m GET,POST --headers "User-Agent: Mozilla/5.0"
 ```
 
 ```bash
