@@ -19,13 +19,15 @@ mkdir js
 ### Opsi 1 - Dari web langsung
 
 ```bash
-katana -u https://shop.post.ch/en -d 5 -jc | grep '\.js$' | tee -a js/alljs.txt
-
-echo "https://shop.post.ch/en" | waybackurls | grep '\.js$' | sort -u | anew js/alljs.txt
+katana -u https://targt.com -d 5 -jc | grep '\.js$' | tee -a js/alljs.txt
 ```
 
 ```bash
-curl -s "https://shop.post.ch/en/checkout/addresses" \
+echo "https://targt.com" | waybackurls | grep '\.js$' | sort -u | anew js/alljs.txt
+```
+
+```bash
+curl -s "https://targt.com/checkout/addresses" \
 | grep -Eo '(https?:)?//[^"]+\.js[^"]*' \
 | sort -u > js/jscdx.txt
 ```
@@ -33,7 +35,7 @@ curl -s "https://shop.post.ch/en/checkout/addresses" \
 ### Opsi 2 - Dari list URLs hasil crawling
 
 ```bash
-grep -E "\.js(\?|$)" urls | anew js/alljs.txt
+grep -E "\.js(\?|$)" urls.txt | anew js/alljs.txt
 ```
 
 > Bisa pakai salah satu, atau keduanya
@@ -43,19 +45,27 @@ grep -E "\.js(\?|$)" urls | anew js/alljs.txt
 ## 🎯 Grab JS dari live subdomains
 
 ```bash
-cat hosts | subjs | sort -u > live_subjs_js.txt
+cat hosts.txt | subjs | sort -u > live_subjs_js.txt
+```
 
-cat hosts | getJS | sort -u > live_getjs_js.txt
+```bash
+cat hosts.txt | getJS | sort -u > live_getjs_js.txt
+```
 
-katana -list hosts -d 2 -jc -silent | grep -E '\.js([?#].*)?$' | sort -u > live_katana_js.txt
+```bash
+katana -list hosts.txt -d 2 -jc -silent | grep -E '\.js([?#].*)?$' | sort -u > live_katana_js.txt
 ```
 
 ```bash
 linkfinder -i https://www.example.com -d -o cli | sort -u | tee linkfinder_raw.txt
+```
 
+```bash
 # Ekstrak hanya URL untuk domain target kita 
 grep -Eo 'https?://[^ )"]+example\.com[^ )"]*' linkfinder_raw.txt | sort -u > linkfinder_urls.txt 
+```
 
+```bash
 # Filter URL yang mengarah ke file JS 
 grep -E '\.js([?#].*)?$' linkfinder_urls.txt | sort -u > live_linkfinder_js.txt
 ```
@@ -65,12 +75,18 @@ grep -E '\.js([?#].*)?$' linkfinder_urls.txt | sort -u > live_linkfinder_js.txt
 ## 📦 Ambil JavaScript dari URL yang diarsipkan
 
 ```bash
-gau --subs < domains | grep -E '\.js([?#].*)?$' | sort -u > archive_gau_js.txt 
+gau --subs < domains.txt | grep -E '\.js([?#].*)?$' | sort -u > archive_gau_js.txt 
+```
 
-waybackurls < domains | grep -E '\.js([?#].*)?$' | sort -u > archive_wayback_js.txt
+```bash
+waybackurls < domains.txt | grep -E '\.js([?#].*)?$' | sort -u > archive_wayback_js.txt
+```
 
+```bash
 cat archive_gau_js.txt archive_wayback_js.txt | subjs | sort -u > archive_subjs_js.txt
+```
 
+```bash
 cat archive_gau_js.txt archive_wayback_js.txt | getJS | sort -u > archive_getjs_js.txt
 ```
 
