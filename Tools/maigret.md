@@ -80,3 +80,121 @@ maigret --test
 ```bash
 maigret --help
 ```
+
+## Recon Mode
+
+**Cari Semua Jejak Username + Domain Terkait**
+
+```bash
+maigret username \
+  --all-sites \
+  --with-domains
+```
+
+
+
+## Deep Recon Mode
+
+**Cari Username + Variasi Username**
+
+```bash
+maigret username \
+  --all-sites \
+  --with-domains \
+  --permute
+```
+
+
+
+## Author Enumeration
+
+**Enumerasi Author Blog / Karyawan**
+
+```bash
+maigret \
+  username1 \
+  username2 \
+  username3 \
+  --all-sites
+```
+
+
+
+## Parse Existing Profile
+
+**Pivot Dari Akun Yang Sudah Ketemu**
+
+```bash
+maigret --parse https://github.com/username
+```
+
+```bash
+maigret --parse https://medium.com/@username
+```
+
+```bash
+maigret --parse https://bsky.app/profile/username.bsky.social
+```
+
+
+
+## Maximum Coverage
+
+```bash
+maigret username \
+  --all-sites \
+  --with-domains \
+  --permute \
+  --print-errors
+```
+
+
+
+## Generate HTML Report
+
+```bash
+maigret username -H
+```
+
+
+
+## Generate JSON Report
+
+```bash
+maigret username -J simple
+```
+
+
+
+## Generate Semua Report
+
+```bash
+maigret username \
+  -H \
+  -M \
+  -J simple
+```
+
+
+
+## Anonymous Scan
+
+```bash
+maigret username \
+  --tor-proxy socks5://127.0.0.1:9050
+```
+
+
+
+## Full Recon Mode
+
+```bash
+maigret username \
+  --all-sites \
+  --with-domains \
+  --permute \
+  --print-errors \
+  -H \
+  -M \
+  -J simple
+```
