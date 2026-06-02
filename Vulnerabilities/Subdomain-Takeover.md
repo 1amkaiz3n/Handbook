@@ -261,36 +261,30 @@ cat potential.txt | httpx -silent \
 ### subjack
 
 ```bash
-cat hosts.txt | subjack -t 20 -o results.txt
-```
-
-atau 
-
-```bash
-cat domains.txt | subjack -t 20 -o results.txt
+cat resolved.txt | subjack -t 20 -o results.txt
 ```
 
 ### Subzy
 
 ```bash
-subzy run --targets hosts.txt --concurrency 100 --hide_fails --verify_ssl
+subzy run --targets resolved.txt --concurrency 100 --hide_fails --verify_ssl
 ```
 
 ### Nuclei
 
 ```bash
-nuclei -t ~/nuclei-templates/dns/ -l hosts.txt
+nuclei -t ~/nuclei-templates/dns/ -l resolved.txt
 ```
 
 ```bash
-nuclei -t ~/nuclei-templates/http/takeovers/ -l hosts.txt
+nuclei -t ~/nuclei-templates/http/takeovers/ -l resolved.txt
 ```
 
 ```bash
 # Jalanin dengan severity filter
 nuclei -t ~/nuclei-templates/http/takeovers/ \
        -t ~/nuclei-templates/dns/ \
-       -l hosts.txt \
+       -l resolved.txt \
        -severity medium,high,critical \
        -o nuclei-results.txt
 ```
@@ -301,11 +295,11 @@ nuclei -t ~/nuclei-templates/http/takeovers/ \
 
 ```bash
 # Simpan hasil scan sebelumnya
-cp hosts.txt hosts.txt.old
+cp resolved.txt resolved.txt.old
 
 # Jalanin ulang enumeration & validasi
 # Bandingkan untuk temukan target baru
-diff hosts.txt.old hosts.txt | grep "^>" | anew new-targets.txt
+diff resolved.txt.old resolved.txt | grep "^>" | anew new-targets.txt
 ```
 
 

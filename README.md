@@ -5,7 +5,7 @@
 **Subfinder**
 
 ```bash
-subfinder -silent -dL wildcards | anew domains.txt  &&  && && 
+subfinder -silent -dL wildcards | anew domains.txt 
 ```
 
 **assetfinder**
@@ -64,7 +64,7 @@ dnsx -l domains.txt -silent -a -cname -resp -o resolved.txt
 ## HTTP Probing & Infrastructure Fingerprinting
 
 ```bash
-cat resolved.txt | httpx -silent -threads 200 \
+httpx -l resolved.txt -silent -threads 200 \
   -follow-redirects \
   -status-code \
   -title \
@@ -81,6 +81,41 @@ cat resolved.txt | httpx -silent -threads 200 \
 **Filter**
 
 ```bash
+cat live_hosts_info.txt | awk '{print $1}' | sort -u | anew hosts.txt
+```
+
+
+### One Liner
+
+```bash
+subfinder -silent -dL wildcards | anew domains.txt  &&  \
+while read domain; do
+  assetfinder --subs-only "$domain"
+done < wildcards | anew domains.txt  && \
+chaos -dL wildcards -silent | anew domains.txt && \
+cat wildcards | while read domain; do github-subdomains -d "$domain" -raw; done | grep -v 'https://' | grep -v '^\[' | anew domains.txt && \
+while read d; do
+  curl -s "https://crt.sh/?q=%25.$d&output=json" \
+  | jq -r '.[].name_value' 2>/dev/null
+done < wildcards \
+| sed 's/\*\.//g' \
+| tr ',' '\n' \
+| grep -v '^\*' \
+| sort -u | anew domains.txt && \
+sort -u domains.txt -o domains.txt && \
+dnsx -l domains.txt -silent -a -cname -resp -o resolved.txt && \
+httpx -l resolved.txt -silent -threads 200 \
+  -follow-redirects \
+  -status-code \
+  -title \
+  -tech-detect \
+  -content-length \
+  -web-server \
+  -server \
+  -ip \
+  -cname \
+  -location \
+  -o live_hosts_info.txt && \
 cat live_hosts_info.txt | awk '{print $1}' | sort -u | anew hosts.txt
 ```
 
