@@ -4,12 +4,12 @@
 
 ```bash
 # buat paths dulu
-cat urls | unfurl path | sort -u > paths 
+cat urls.txt | unfurl path | sort -u > paths 
 ```
 
 ```bash
 # ini akan menyimpn ke dalam folder out
-meg --verbose paths hosts
+meg --verbose paths hosts.txt
 ```
 
 ## Cari Server
@@ -20,7 +20,7 @@ grep -Hnri '< Server:' out/
 ## rawhttp
 
 ```bash
-meg -v -r "/%%0a0afoo:bar" hosts rawhttp_out
+meg -v -r "/%%0a0afoo:bar" hosts.txt rawhttp_out
 ```
 
 Cari
@@ -41,7 +41,7 @@ grep -rniE "nginx|cloudflare|akamai|access denied|forbidden" rawhttp_out
 ## Path-Based XSS
 
 ```bash
-meg -v -r "/footle%3c%22bootle" hosts xss_out
+meg -v -r "/footle%3c%22bootle" hosts.txt xss_out
 
 # filter reflection
 grep -hriE '(footle<|"bootle)'
@@ -62,7 +62,7 @@ curl -i "https://target/footle%3Ctest%3E"
 ## CRLF Injection
 
 ```bash
-meg -v -c 80 "/%0d%0aSet-Cookie:crlf=injection" hosts crlf_out
+meg -v -c 80 "/%0d%0aSet-Cookie:crlf=injection" hosts.txt crlf_out
 ## output ke crlf_out
 
 # FILTER
@@ -99,7 +99,7 @@ curl -i -H "X-Forwarded-Host: evil.com%0d%0aSet-Cookie:crlf=1" https://row2.vfsg
 ## Open Redirect
 
 ```bash
-meg -v -c 80 "///example.com/%2f.." hosts open_redirect_out
+meg -v -c 80 "///example.com/%2f.." hosts.txt open_redirect_out
 ## output ke open_redirect_out
 ```
 
@@ -111,7 +111,7 @@ grep -hri 'Location: //example.com' open_redirect_out/
 ## CORS Config Error
 
 ```bash
-meg --verbose --header "Origin: https://evil.com" paths hosts cors_out
+meg --verbose --header "Origin: https://evil.com" paths hosts.txt cors_out
 ```
 
 ```bash

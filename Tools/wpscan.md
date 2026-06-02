@@ -1,5 +1,10 @@
 # WPScan
 
+## Aggressive scan: all themes, all plugins, users
+
+```bash
+wpscan --url https://target.com --disable-tls-checks --api-token <here> -e at -e ap -e u --enumerate ap --plugins-detection aggressive --force
+```
 
 ## Enumerate all plugins with known vulnerabilities
 ```bash

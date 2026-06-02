@@ -22,11 +22,11 @@ Origin: https://evil.com%2etarget.com
 
 ```bash
 # buat paths dulu
-cat urls | unfurl path | sort -u > paths 
+cat urls.txt | unfurl path | sort -u > paths 
 ```
 
 ```bash
-meg --verbose --header "Origin: https://evil.com" paths hosts cors_out
+meg --verbose --header "Origin: https://evil.com" paths hosts.txt cors_out
 ```
 
 ```bash
@@ -70,15 +70,15 @@ corscanner -u https://example.com -p http://127.0.0.1:8080
 
 ```bash
 # Dari file urls
-cat urls | grep -v '^$' | while read url; do
+cat urls.txt | grep -v '^$' | while read url; do
   echo "[*] scanning $url"
   corscanner -u "$url"
 done
 ```
 
 ```bash
-# Dari file hosts
-cat hosts | grep -v '^$' | while read url; do
+# Dari file hosts.txt
+cat hosts.txt | grep -v '^$' | while read url; do
   echo "[*] scanning $url"
   corscanner -u "$url"
 done
