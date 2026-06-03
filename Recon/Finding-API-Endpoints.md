@@ -101,7 +101,7 @@ Sempurna! Anda telah menemukan API-nya.
 
 ### Your Scrapy Spider 
 
-```js
+```python
 import scrapy
 import json
 
