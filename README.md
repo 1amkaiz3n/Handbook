@@ -129,26 +129,51 @@ cat live_hosts_info.txt | awk '{print $1}' | sort -u | anew hosts.txt
 
 ## URL Collection & Analysis
 
-```bash
-katana -list hosts.txt -d 5 -jc -kf all | anew urls.txt
-```
+### Katana
 
 ```bash
 katana -list hosts.txt -d 5 -js-crawl -xhr -kf all | anew urls.txt
 ```
 
+### waybackurls
+
 ```bash
 cat hosts.txt | waybackurls |  anew urls.txt
 ```
+
+### hakrawler
 
 ```bash
 cat hosts.txt | hakrawler -d 3 | anew urls.txt
 ```
 
+### gau
+
 ```bash
 gau --providers wayback,commoncrawl,otx,urlscan --subs < hosts.txt | sort -u | anew urls.txt
 ```
 
+## JavaScript Analysis & Endpoint Extraction
+
+### Filter JS dari URL list
+
+```bash
+cat urls.txt | grep "\.js" | httpx -silent | anew js.txt
+```
+
+### Extract endpoint dari JS
+
+```bash
+cat js.txt | getJS --complete | anew endpoints.txt
+```
+
+### Deep endpoint mining
+
+```bash
+cat js.txt | while read url; do
+  python3 linkfinder.py -i "$url" -o cli
+done | anew endpoints.txt
+```
 
 ## Parameter Extraction
 
