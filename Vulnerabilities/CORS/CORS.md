@@ -73,13 +73,25 @@ done < live_apis.txt
 
 ```bash
 #!/bin/bash
-
 OUTDIR="cors_results"
 mkdir -p "$OUTDIR"
 
-INPUT="$1"
+INPUT="${1:--}"
 
-if [ -z "$INPUT" ]; then
+echo "=================================="
+echo "🚀 CORS AUTO HUNTER v2 STARTING"
+echo "=================================="
+
+#####################################
+# INPUT HANDLING (FLEXIBLE)
+#####################################
+if [[ "$INPUT" == http* ]]; then
+  echo "$INPUT" > /tmp/cors_input.txt
+elif [[ "$INPUT" == "-" ]] || [ -z "$1" ]; then
+  cat - | tr -d '\r' | grep -v '^$' | sort -u > /tmp/cors_input.txt
+elif [ -f "$INPUT" ]; then
+  cat "$INPUT" | tr -d '\r' | grep -v '^$' | sort -u > /tmp/cors_input.txt
+else
   echo "Usage:"
   echo "  cat urls.txt | corsHunter"
   echo "  corsHunter urls.txt"
@@ -87,102 +99,84 @@ if [ -z "$INPUT" ]; then
   exit 1
 fi
 
-echo "=================================="
-echo "🚀 CORS AUTO HUNTER v3"
-echo "=================================="
-
 #####################################
-# INPUT HANDLING (FLEXIBLE PIPELINE)
+# STEP 1 - API MINING
 #####################################
+echo "📡 [1/3] Mining API endpoints..."
+cat /tmp/cors_input.txt | \
+  tr -d '\r' | \
+  grep -iE "/api/|/v1/|/v2/|/auth|/login|/user|/config|/chat|/track" | \
+  cut -d'?' -f1 | \
+  grep -vE "\.js|\.css|\.png|\.jpg|\.jpeg|\.svg|\.gif|\.woff|\.ttf|\.html|\.json|\.map" | \
+  sort -u > /tmp/cors_apis.txt
 
-if [[ "$INPUT" == http* ]]; then
-  echo "$INPUT" > "$OUTDIR/input.txt"
-
-elif [ -f "$INPUT" ]; then
-  cat "$INPUT" | tr -d '\r' | sort -u > "$OUTDIR/input.txt"
-
-else
-  cat - | tr -d '\r' | sort -u > "$OUTDIR/input.txt"
+COUNT=$(wc -l < /tmp/cors_apis.txt)
+if [ "$COUNT" -eq 0 ]; then
+  echo "[!] Tidak ada API endpoint, pakai semua URL..."
+  cp /tmp/cors_input.txt /tmp/cors_apis.txt
+  COUNT=$(wc -l < /tmp/cors_apis.txt)
 fi
+echo "✅ APIs found: $COUNT"
 
 #####################################
-# STEP 1 - API FILTERING
+# STEP 2 - LIVE CHECK
 #####################################
-echo "📡 [1/3] Extracting API endpoints..."
-
-cat "$OUTDIR/input.txt" | \
-  grep -iE "/api/|/v1/|/v2/|/auth|/login|/user|/config|/graphql|/chat|/token|/session" | \
-  grep -viE "\.(js|css|png|jpg|jpeg|svg|gif|woff|ttf|html|json|map)$" | \
-  sort -u > "$OUTDIR/apis.txt"
-
-echo "[+] APIs: $(wc -l < "$OUTDIR/apis.txt")"
+echo "🌐 [2/3] Checking live endpoints..."
+cat /tmp/cors_apis.txt | \
+  httpx -silent -status-code -title -follow-redirects -timeout 15 -threads 50 \
+  > /tmp/cors_live.txt
+echo "✅ Live endpoints: $(wc -l < /tmp/cors_live.txt)"
 
 #####################################
-# STEP 2 - LIVE CHECK (FAST)
+# STEP 3 - CORS FUZZ ENGINE
 #####################################
-echo "🌐 [2/3] Live filtering..."
+echo "🔍 [3/3] CORS testing started..."
+rm -f "$OUTDIR/cors_vulnerable.txt" "$OUTDIR/cors_partial.txt"
 
-cat "$OUTDIR/apis.txt" | \
-  httpx -silent -status-code -follow-redirects -threads 50 \
-  > "$OUTDIR/live.txt"
+while read line; do
+  url=$(echo "$line" | awk '{print $1}')
+  [ -z "$url" ] && continue
 
-echo "[+] Live: $(wc -l < "$OUTDIR/live.txt")"
+  for origin in \
+    "https://evil.com" \
+    "https://target.com.evil.com" \
+    "null" \
+    "https://localhost" \
+    "https://evil.com%60target.com"
+  do
+    response=$(curl -sk -i \
+      -H "Origin: $origin" \
+      -H "Cookie: test=test" \
+      --max-time 10 \
+      "$url" 2>/dev/null)
 
-#####################################
-# STEP 3 - CORS ENGINE (REAL CHECK)
-#####################################
-echo "🔍 [3/3] CORS testing..."
+    acao=$(echo "$response" | grep -i "access-control-allow-origin" | head -1)
+    acac=$(echo "$response" | grep -i "access-control-allow-credentials" | head -1)
 
-rm -f "$OUTDIR/vuln.txt" "$OUTDIR/info.txt"
-
-ORIGINS=(
-  "https://evil.com"
-  "https://a.evil.com"
-  "null"
-  "https://localhost"
-  "https://sub.target.com.evil.com"
-)
-
-cat "$OUTDIR/live.txt" | cut -d' ' -f1 | \
-xargs -P40 -I{} bash -c '
-url="{}"
-
-for origin in "${ORIGINS[@]}"; do
-
-  resp=$(curl -sk -D - -o /dev/null \
-    -H "Origin: $origin" \
-    -H "User-Agent: Mozilla/5.0" \
-    "$url")
-
-  acao=$(echo "$resp" | grep -i "access-control-allow-origin")
-  acac=$(echo "$resp" | grep -i "access-control-allow-credentials")
-
-  if echo "$acao" | grep -Eqi "\*|null|evil|localhost|evil.com|sub\.target"; then
-
-    if echo "$acac" | grep -qi "true"; then
-      echo "[VULN] $url | $origin | $acao | $acac" >> cors_results/vuln.txt
-    else
-      echo "[INFO] $url | $origin | $acao" >> cors_results/info.txt
+    if echo "$acao" | grep -Eqi "evil|\\*|null|target\\.com|localhost|$origin"; then
+      if echo "$acac" | grep -qi "true"; then
+        echo "🔴 CRITICAL CORS: $url ($origin)" >> "$OUTDIR/cors_vulnerable.txt"
+        echo "$acao" >> "$OUTDIR/cors_vulnerable.txt"
+        echo "$acac" >> "$OUTDIR/cors_vulnerable.txt"
+        echo "-----" >> "$OUTDIR/cors_vulnerable.txt"
+      else
+        echo "🟡 INFO CORS: $url ($origin)" >> "$OUTDIR/cors_partial.txt"
+      fi
     fi
-
-  fi
-
-done
-'
+  done
+done < /tmp/cors_live.txt
 
 #####################################
 # REPORT
 #####################################
 echo "=================================="
-echo "📊 RESULT"
+echo "📊 CORS HUNT COMPLETE"
 echo "=================================="
-
-echo "APIs      : $(wc -l < "$OUTDIR/apis.txt")"
-echo "LIVE      : $(wc -l < "$OUTDIR/live.txt")"
-echo "VULN CORS : $(wc -l < "$OUTDIR/vuln.txt")"
-echo "INFO CORS : $(wc -l < "$OUTDIR/info.txt")"
-
+echo "APIs found    : $(wc -l < /tmp/cors_apis.txt)"
+echo "Live APIs     : $(wc -l < /tmp/cors_live.txt)"
+echo "Critical CORS : $(wc -l < "$OUTDIR/cors_vulnerable.txt" 2>/dev/null || echo 0)"
+echo "Partial CORS  : $(wc -l < "$OUTDIR/cors_partial.txt" 2>/dev/null || echo 0)"
 echo "=================================="
-echo "📁 $OUTDIR/"
+echo "📁 Output: $OUTDIR/"
 echo "=================================="
 ```
