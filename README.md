@@ -58,7 +58,7 @@ sort -u domains.txt -o domains.txt
 ## DNS Validations
 
 ```bash
-dnsx -l domains.txt -silent -a -cname -resp -o resolved.txt
+dnsx -l domains.txt -silent  -o resolved.txt
 ```
 
 ## HTTP Probing & Infrastructure Fingerprinting
@@ -103,7 +103,7 @@ done < wildcards \
 | grep -v '^\*' \
 | sort -u | anew domains.txt && \
 sort -u domains.txt -o domains.txt && \
-dnsx -l domains.txt -silent -a -cname -resp -o resolved.txt && \
+dnsx -l domains.txt -silent  -o resolved.txt && \
 httpx -l resolved.txt -silent -threads 200 \
   -follow-redirects \
   -status-code \
