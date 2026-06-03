@@ -25,7 +25,7 @@ chaos -dL wildcards -silent | anew domains.txt
 **github-subdomains**
 
 ```bash
-cat wildcards | while read domain; do github-subdomains -d "$domain" -raw; done | grep -v 'https://' | grep -v '^\[' | anew domains.txt
+cat wildcards | while read domain; do github-subdomains -d "$domain" -raw; done | anew domains.txt
 ```
 
 **crt.sh**
@@ -137,7 +137,7 @@ done
 subfinder -silent -dL wildcards | anew domains.txt && \
 cat wildcards | while read domain; do assetfinder --subs-only "$domain"; done | anew domains.txt && \
 chaos -dL wildcards | anew domains.txt && \
-cat wildcards | while read domain; do github-subdomains -d "$domain" -raw; done | grep -v 'https://' | grep -v '^\[' | anew domains.txt && \
+cat wildcards | while read domain; do github-subdomains -d "$domain" -raw; done | anew domains.txt && \
 cat wildcards | while read domain; do curl -s "https://crt.sh/?q=%.$domain&output=json" | grep -v '^<' | jq -r '.[].name_value' 2>/dev/null | sed 's/\*\.//g' | tr ',' '\n' | grep -v '^\*' | grep "\.$domain$"; done | sort -u | anew domains.txt && \
 sort -u domains.txt -o domains.txt && \
 dnsx -l domains.txt -a -resp-only -silent -o ips.txt && \
