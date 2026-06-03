@@ -155,17 +155,21 @@ gau --providers wayback,commoncrawl,otx,urlscan --subs < hosts.txt | sort -u | a
 
 ## JavaScript Analysis & Endpoint Extraction
 
-### Filter JS dari URL list
+### Grab JS
 
 ```bash
-cat urls.txt | grep "\.js" | httpx -silent | anew js.txt
+cat urls.txt | grep -E '\.js([?#].*)?$' | httpx -silent | anew js.txt
 ```
-
-### Extract endpoint dari JS
 
 ```bash
-cat js.txt | getJS --complete | anew endpoints.txt
+cat hosts.txt | subjs | sort -u | anew js.txt
 ```
+
+```bash
+cat hosts.txt | getJS --complete | anew js.txt
+```
+
+
 
 ### Deep endpoint mining
 
@@ -174,6 +178,8 @@ cat js.txt | while read url; do
   python3 linkfinder.py -i "$url" -o cli
 done | anew endpoints.txt
 ```
+
+
 
 ## Parameter Extraction
 
