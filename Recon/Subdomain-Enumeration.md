@@ -11,7 +11,7 @@ Contoh :
 **Subfinder**
 
 ```bash
-subfinder -silent -dL wildcards | anew domains.txt  &&  && && 
+subfinder -silent -dL wildcards | anew domains.txt 
 ```
 
 **assetfinder**

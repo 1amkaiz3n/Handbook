@@ -31,14 +31,14 @@ cat wildcards | while read domain; do github-subdomains -d "$domain" -raw; done 
 **crt.sh**
 
 ```bash
-while read d; do
-  curl -s "https://crt.sh/?q=%25.$d&output=json" \
-  | jq -r '.[].name_value' 2>/dev/null
+while read domain; do
+  curl -s "https://crt.sh/?q=%.$domain&output=json" \
+  | jq -r '.[].name_value' 2>/dev/null || true
 done < wildcards \
 | sed 's/\*\.//g' \
 | tr ',' '\n' \
 | grep -v '^\*' \
-| sort -u | anew domains.txt
+| anew domains.txt
 ```
 
 **bbot**
@@ -88,22 +88,34 @@ cat live_hosts_info.txt | awk '{print $1}' | sort -u | anew hosts.txt
 ### One Liner
 
 ```bash
-subfinder -silent -dL wildcards | anew domains.txt  &&  \
+subfinder -silent -dL wildcards | anew domains.txt || true && \
+
 while read domain; do
   assetfinder --subs-only "$domain"
-done < wildcards | anew domains.txt  && \
-chaos -dL wildcards -silent | anew domains.txt && \
-cat wildcards | while read domain; do github-subdomains -d "$domain" -raw; done | grep -v 'https://' | grep -v '^\[' | anew domains.txt && \
-while read d; do
-  curl -s "https://crt.sh/?q=%25.$d&output=json" \
-  | jq -r '.[].name_value' 2>/dev/null
+done < wildcards | anew domains.txt || true && \
+
+chaos -dL wildcards -silent | anew domains.txt || true && \
+
+while read domain; do
+  github-subdomains -d "$domain" -raw
+done < wildcards \
+| grep -v 'https://' \
+| grep -v '^\[' \
+| anew domains.txt || true && \
+
+while read domain; do
+  curl -s "https://crt.sh/?q=%.$domain&output=json" \
+  | jq -r '.[].name_value' 2>/dev/null || true
 done < wildcards \
 | sed 's/\*\.//g' \
 | tr ',' '\n' \
 | grep -v '^\*' \
-| sort -u | anew domains.txt && \
+| anew domains.txt || true && \
+
 sort -u domains.txt -o domains.txt && \
-dnsx -l domains.txt -silent  -o resolved.txt && \
+
+dnsx -l domains.txt -silent -a -cname -resp | awk '{print $1}' | sort -u > resolved.txt && \
+
 httpx -l resolved.txt -silent -threads 200 \
   -follow-redirects \
   -status-code \
@@ -116,6 +128,7 @@ httpx -l resolved.txt -silent -threads 200 \
   -cname \
   -location \
   -o live_hosts_info.txt && \
+
 cat live_hosts_info.txt | awk '{print $1}' | sort -u | anew hosts.txt
 ```
 
