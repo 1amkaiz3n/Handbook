@@ -25,7 +25,12 @@ chaos -dL wildcards -silent | anew domains.txt
 **github-subdomains**
 
 ```bash
-cat wildcards | while read domain; do github-subdomains -d "$domain" -raw; done | grep -v 'https://' | grep -v '^\[' | anew domains.txt
+while read domain; do
+  github-subdomains -d "$domain" -raw
+done < wildcards \
+| grep -v 'https://' \
+| grep -v '^\[' \
+| anew domains.txt 
 ```
 
 **crt.sh**
