@@ -81,9 +81,9 @@ INPUT="$1"
 
 if [ -z "$INPUT" ]; then
   echo "Usage:"
-  echo "  cat urls.txt | $0"
-  echo "  $0 urls.txt"
-  echo "  $0 https://target.com/api"
+  echo "  cat urls.txt | corsHunter"
+  echo "  corsHunter urls.txt"
+  echo "  corsHunter https://target.com/api"
   exit 1
 fi
 
