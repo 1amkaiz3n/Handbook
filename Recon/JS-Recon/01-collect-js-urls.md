@@ -115,29 +115,7 @@ cat js/alljs.txt | uro | sort -u | httpx -mc 200 -o js/live-js
 
 ## 📥 Download semua file JS untuk analisis offline
 
-```bash
-mkdir -p js_files
 
-# Clear the hash_map.txt
-> js_files/hash_map.txt
-
-# One containing hashed filenames, and another containing the hash-to-URL mapping.
-while read -r url; do
-    hash=$(echo "$url" | md5sum | cut -d' ' -f1)
-    echo "$hash $url" >> js_files/hash_map.txt
-    curl -skLf --compressed "$url" -o "js_files/${hash}.js"
-done < all_js_files.txt
-```
-
-Jika menemukan sesuatu yang menarik dalam sebuah file (misalnya, `d41d8cd98f.js`), kita dapat cepat melacaknya kembali:
-
-```bash
-grep d41d8cd98f js_files/hash_map.txt
-```
-
----
-
-## 🔍 Alternative download method
 
 ```bash
 mkdir -p js-download
@@ -156,7 +134,7 @@ curl -s -L --max-time 20 --retry 2 --retry-delay 1 \
 ## 🎨 Beautify downloaded files
 
 ```bash
-for file in js_files/*.js; do js-beautify "$file" -o beautified/$(basename "$file"); done
+for file in js-download/*.js; do js-beautify "$file" -o beautified/$(basename "$file"); done
 ```
 
 Atau:
