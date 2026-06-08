@@ -120,7 +120,7 @@ cat js/alljs.txt | uro | sort -u | httpx -mc 200 -o js/live-js
 ```bash
 mkdir -p js-download
 
-cat js/live-js | xargs -P8 -I{} sh -c '
+cat js/alljs | xargs -P8 -I{} sh -c '
 url="{}"
 filename=$(echo "$url" | md5sum | cut -d" " -f1).js
 

@@ -74,8 +74,7 @@ httpx -l resolved.txt -silent -threads 200 \
   -server \
   -ip \
   -cname \
-  -location \
-  -o live_hosts_info.txt
+  -location | tee -a live_hosts_info.txt
 ```
 
 **Filter**
@@ -121,9 +120,7 @@ httpx -l resolved.txt -silent -threads 200 \
   -server \
   -ip \
   -cname \
-  -location \
-  -o live_hosts_info.txt && \
-
+  -location | tee live_hosts_info.txt && \
 cat live_hosts_info.txt | awk '{print $1}' | sort -u | anew hosts.txt
 ```
 
