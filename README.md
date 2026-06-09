@@ -150,6 +150,13 @@ cat hosts.txt | hakrawler -d 3 | anew urls.txt
 gau --providers wayback,commoncrawl,otx,urlscan --subs < hosts.txt | sort -u | anew urls.txt
 ```
 
+### Buang static files
+
+```bash
+grep -Evi '\.(png|jpg|jpeg|gif|svg|webp|ico|css|woff|woff2|ttf|eot|otf|mp4|webm|mp3|wav|pdf)$' urls.txt > urls-clean.txt
+```
+
+
 ## JavaScript Analysis & Endpoint Extraction
 
 ### Grab JS
