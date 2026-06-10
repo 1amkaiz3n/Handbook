@@ -11,4 +11,10 @@
 - [How I weaponised a registration flow bug and OTP bypass technique to hijack accounts.](https://medium.com/@amitdutta6026/how-i-weaponised-a-registration-flow-bug-and-otp-bypass-technique-to-hijack-accounts-23758688e38d)
 - [Vulnerable Bank (Vuln-Bank) | Writeup (Bahasa Indonesia)](https://relaaxx.medium.com/vulnerable-bank-vuln-bank-12642970f536)
 - [PortSwigger - API testing](https://hackmd.io/R_ypAX3GSx6WUyWUqbWTqw?utm_source=chatgpt.com)
+- [Apache HTTP Server Path Traversal & Remote Code Execution (RCE) ](https://pwn0sec.medium.com/apache-http-server-path-traversal-remote-code-execution-rce-kepolisian-negara-republik-68b7571181a6)
+- [Apache Tomcat Pentesting](https://hackviser.com/tactics/pentesting/services/tomcat)
+- [Desinkronisasi berbasis jeda di Apache HTTPD ](https://hackerone.com/reports/1667974) 
+- [Request Smuggling in Apache Tomcat (Important, CVE-2023-45648)](https://hackerone.com/reports/2299692)
+- [Hacking into a misconfigured Apache Tomcat webserver (and defending it later)](https://medium.com/@cyberturini/hacking-into-a-misconfigured-apache-tomcat-webserver-and-defending-it-later-a373345956ee)
+- [HTTP Request Smuggling: From Basics to Bounty](https://medium.com/@jayeshkunwal/http-request-smuggling-from-basics-to-bounty-4a799f2e18c2)
 
