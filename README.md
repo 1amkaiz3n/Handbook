@@ -2,6 +2,32 @@
 
 ## SUBDOMAIN DISCOVERY 
 
+Isi file wildcards
+
+```
+sub.target.com
+sub2.target.com
+sub3.target.com
+...
+...
+
+```
+
+JIka isi file nya
+
+```
+*.sub.target.com
+*.sub2.target.com
+*.sub3.target.com
+...
+```
+
+Jalankan ini
+
+```bash
+sed 's/^\*\.\?//' wildcards
+```
+
 **Subfinder**
 
 ```bash
