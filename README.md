@@ -329,7 +329,7 @@ Untuk lebih lengkapnya bisa cek [disini](https://1amkaiz3ns-books.gitbook.io/bug
 ## Subdomain Takeover
 
 ```bash
-cat domains.txt | subjack -t 20 -o results.txt
+cat domains.txt | subjack -t 20 | anew results.txt
 ```
 
 

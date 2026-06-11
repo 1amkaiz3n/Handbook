@@ -261,7 +261,7 @@ cat potential.txt | httpx -silent \
 ### subjack
 
 ```bash
-cat resolved.txt | subjack -t 20 -o results.txt
+cat resolved.txt | subjack -t 20 | anew results.txt
 ```
 
 ### Subzy
