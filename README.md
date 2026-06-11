@@ -157,16 +157,21 @@ gau --providers wayback,commoncrawl,otx,urlscan --subs < hosts.txt | sort -u | a
 ### Buang static files
 
 ```bash
-grep -Evi '\.(png|jpg|jpeg|gif|svg|webp|ico|css|woff|woff2|ttf|eot|otf|mp4|webm|mp3|wav|pdf)$' urls.txt > urls-clean.txt
+grep -Evi '\.(png|jpg|jpeg|gif|svg|webp|ico|css|woff|woff2|ttf|eot|otf|mp4|webm|mp3|wav|pdf)$' urls.txt > urls_clean.txt
 ```
 
+### live URLS
+
+```bash
+httpx -l -sc urls_clean.txt | tee live_urls.txt
+```
 
 ## JavaScript Analysis & Endpoint Extraction
 
 ### Grab JS
 
 ```bash
-cat urls.txt | grep -E '\.js([?#].*)?$' | httpx -silent | anew js.txt
+cat urls_clean.txt | grep -E '\.js([?#].*)?$' | httpx -silent | anew js.txt
 ```
 
 ```bash
@@ -192,7 +197,7 @@ done | anew endpoints.txt
 ## Parameter Extraction
 
 ```bash
-cat urls.txt | grep "=" > params.txt
+cat urls_clean.txt | grep "=" > params.txt
 ```
 
 Untuk lebih lengkapnya bisa cek di [sini](https://1amkaiz3ns-books.gitbook.io/bug-bounty/handbook/recon/parameter-extraction-and-analys)
@@ -205,42 +210,42 @@ Untuk lebih lengkapnya bisa cek di [sini](https://1amkaiz3ns-books.gitbook.io/bu
 **Filter URLs for common sensitive file extensions**
 
 ```bash
-cat urls.txt | grep -E "\.xls|\.xml|\.xlsx|\.json|\.pdf|\.sql|\.doc|\.docx|\.pptx|\.txt|\.zip|\.tar\.gz|\.tgz|\.bak|\.7z|\.rar|\.log|\.cache|\.secret|\.db|\.backup|\.yml|\.gz|\.config|\.csv|\.yaml|\.md|\.md5"
+cat urls_clean.txt | grep -E "\.xls|\.xml|\.xlsx|\.json|\.pdf|\.sql|\.doc|\.docx|\.pptx|\.txt|\.zip|\.tar\.gz|\.tgz|\.bak|\.7z|\.rar|\.log|\.cache|\.secret|\.db|\.backup|\.yml|\.gz|\.config|\.csv|\.yaml|\.md|\.md5"
 ```
 **Extended regex for sensitive file discovery**
 
 ```bash
-cat urls.txt | grep -E "\.(xls|xml|xlsx|json|pdf|sql|doc|docx|pptx|txt|zip|tar\.gz|tgz|bak|7z|rar|log|cache|secret|db|backup|yml|gz|config|csv|yaml|md|md5|tar|xz|7zip|p12|pem|key|crt|csr|sh|pl|py|java|class|jar|war|ear|sqlitedb|sqlite3|dbf|db3|accdb|mdb|sqlcipher|gitignore|env|ini|conf|properties|plist|cfg)$"
+cat urls_clean.txt | grep -E "\.(xls|xml|xlsx|json|pdf|sql|doc|docx|pptx|txt|zip|tar\.gz|tgz|bak|7z|rar|log|cache|secret|db|backup|yml|gz|config|csv|yaml|md|md5|tar|xz|7zip|p12|pem|key|crt|csr|sh|pl|py|java|class|jar|war|ear|sqlitedb|sqlite3|dbf|db3|accdb|mdb|sqlcipher|gitignore|env|ini|conf|properties|plist|cfg)$"
 ```
 
 **Filter file + prioritize exposure**
 
 ```bash
-cat urls.txt | grep -Ei "\.(env|bak|backup|old|swp|sql|db|sqlite|json|xml|yml|yaml|config|ini|log|tar|gz|zip|rar|7z|pem|key|crt|p12|pfx|csv|txt)$"
+cat urls_clean.txt | grep -Ei "\.(env|bak|backup|old|swp|sql|db|sqlite|json|xml|yml|yaml|config|ini|log|tar|gz|zip|rar|7z|pem|key|crt|p12|pfx|csv|txt)$"
 ```
 
 **Hidden backup naming pattern**
 
 ```bash
-cat urls.txt | grep -Ei "(backup|bak|old|copy|temp|test|dev|staging|prod|prod-old|v1|v2|202[0-9])"
+cat urls_clean.txt | grep -Ei "(backup|bak|old|copy|temp|test|dev|staging|prod|prod-old|v1|v2|202[0-9])"
 ```
 
 **WordPress sensitive leak**
 
 ```bash
-cat urls.txt | grep -Ei "(wp-config|debug|error|backup|uploads|upgrade|cache|mu-plugins|plugins|themes)"
+cat urls_clean.txt | grep -Ei "(wp-config|debug|error|backup|uploads|upgrade|cache|mu-plugins|plugins|themes)"
 ```
 
 **Directory file exposure pattern**
 
 ```bash
-cat urls.txt | grep -Ei "\/(backup|backups|files|uploads|assets|storage|dump|export|data)\/"
+cat urls_clean.txt | grep -Ei "\/(backup|backups|files|uploads|assets|storage|dump|export|data)\/"
 ```
 
 **Parameter-based file exposure (kalau nanti ketemu param)**
 
 ```bash
-cat urls.txt | grep -Ei "\?(file|path|download|doc|dir|folder|image|img|url|src|load)="
+cat urls_clean.txt | grep -Ei "\?(file|path|download|doc|dir|folder|image|img|url|src|load)="
 ```
 
 **High value sensitive files**
@@ -248,7 +253,7 @@ cat urls.txt | grep -Ei "\?(file|path|download|doc|dir|folder|image|img|url|src|
 ini bukan sekadar extension tapi **yang biasanya impact tinggi**:
 
 ```bash
-cat urls.txt | grep -Ei "(wp-config\.php|\.env|\.git|\.git/config|composer\.json|package\.json|docker-compose\.yml|id_rsa|authorized_keys)"
+cat urls_clean.txt | grep -Ei "(wp-config\.php|\.env|\.git|\.git/config|composer\.json|package\.json|docker-compose\.yml|id_rsa|authorized_keys)"
 ```
 
 **Google search for sensitive files**
