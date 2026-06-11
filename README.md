@@ -25,7 +25,9 @@ chaos -dL wildcards -silent | anew domains.txt
 **github-subdomains**
 
 ```bash
-cat wildcards | while read domain; do github-subdomains -d "$domain" -raw; done | anew domains.txt
+while read domain; do
+    github-subdomains -d "$domain" -raw -o /dev/stdout
+done < wildcards | anew domains.txt
 ```
 
 **crt.sh**
@@ -95,7 +97,9 @@ done < wildcards | anew domains.txt || true && \
 
 chaos -dL wildcards -silent | anew domains.txt || true && \
 
-cat wildcards | while read domain; do github-subdomains -d "$domain" -raw; done | anew domains.txt || true && \
+while read domain; do
+    github-subdomains -d "$domain" -raw -o /dev/stdout
+done < wildcards | anew domains.txt || true && \
 
 while read domain; do
   curl -s "https://crt.sh/?q=%.$domain&output=json" \
