@@ -17,4 +17,7 @@
 - [Request Smuggling in Apache Tomcat (Important, CVE-2023-45648)](https://hackerone.com/reports/2299692)
 - [Hacking into a misconfigured Apache Tomcat webserver (and defending it later)](https://medium.com/@cyberturini/hacking-into-a-misconfigured-apache-tomcat-webserver-and-defending-it-later-a373345956ee)
 - [HTTP Request Smuggling: From Basics to Bounty](https://medium.com/@jayeshkunwal/http-request-smuggling-from-basics-to-bounty-4a799f2e18c2)
+- [Apache Example Servlet leads to $$$$](https://infosecwriteups.com/apache-example-servlet-leads-to-61a2720cac20)
+- [Tomcat Pentesting](https://github.com/simran-sankhala/Pentest-Tomcat)
+- [Ghostcat-PWN: When an Old Tomcat Vulnerability Opens the org doors](https://medium.com/@deepanshu_khanna/ghostcat-pwn-when-an-old-tomcat-vulnerability-opens-the-org-doors-62406effeed0)
 

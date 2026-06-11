@@ -15,6 +15,10 @@ Setelah Anda mengidentifikasi target potensial untuk HRS, Burp Suite Repeater ad
 HRS bekerja paling baik jika koneksi TCP yang sama tetap terbuka.
 `keep-alive` Memastikan bahwa frontend tidak menutup koneksi setelah satu permintaan. 
 
+![burp](image.png)
+
+Matian update otomatis Content-Length
+![Content-length](image-1.png)
 
 ### Langkah 2: Merancang Payload Smuggling
 
