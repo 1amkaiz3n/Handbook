@@ -21,3 +21,8 @@
 - [Tomcat Pentesting](https://github.com/simran-sankhala/Pentest-Tomcat)
 - [Ghostcat-PWN: When an Old Tomcat Vulnerability Opens the org doors](https://medium.com/@deepanshu_khanna/ghostcat-pwn-when-an-old-tomcat-vulnerability-opens-the-org-doors-62406effeed0)
 
+
+## THM
+
+- [Mr Robot CTF Walkthrough (2023)](https://medium.com/@cspanias/thms-mr-robot-ctf-walkthrough-2023-55ca5c19fbaf)
+- [Basic Pentesting](https://medium.com/@hussinibrahim043/thm-basic-pentesting-write-up-hussein-ibrahim-4bd5eb44d562)
