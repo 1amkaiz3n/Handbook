@@ -1,7 +1,3 @@
-rapihin struktur + judul + flow biar enak dibaca report, tanpa ubah output kamu sama sekali:
-
-
-
 # DNS Zone Transfer (AXFR)
 
 ## 1. Identifikasi Name Server

@@ -1,4 +1,4 @@
-# Metodologi mencari Krentanan di GraphQL
+# Mencari Krentanan di GraphQL
 
 ## Mencari tahu apa yagn di pakai di web app
 kita bis menggunkan tools Graphqw--f untuk mengetahui ap yagn di pakai,apakh Apollo,atau sebagainya

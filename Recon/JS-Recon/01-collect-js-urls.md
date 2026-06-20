@@ -1,6 +1,6 @@
 # 📥 1 - Pengumpulan URL JavaScript
 
-Methodology untuk mengumpulkan semua URL JS dari target.
+Mengumpulkan semua URL JS dari target.
 
 ---
 

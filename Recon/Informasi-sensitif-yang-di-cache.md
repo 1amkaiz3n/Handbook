@@ -1,4 +1,4 @@
-# Methodology menemukn informasi sensitif yang di cache
+#  menemukn informasi sensitif yang di cache
 
 ## Paramaeter Mining
 

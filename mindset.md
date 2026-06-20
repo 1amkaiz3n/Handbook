@@ -4,10 +4,13 @@ GOAL → ASSUMPTION → TEST → RESULT
 
 GOAL :
   - Saya sangat yakin, saya bisa mempertahankan akses ke project meskipun sudah diremove oleh pemilik."
+  
 ASSUMPTION :
   - Asumsi saya, untuk bisa mempertahankan sebuah akses, berarti saya perlu...:
+  
 TEST :
   - Bagaimana cara membuktikan asumsi ini?
+  
 RESULT :
   - Bagaimana hasilnya?
 

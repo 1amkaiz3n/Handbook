@@ -1,4 +1,4 @@
-# 📌 Methodology DNS Recon
+# 📌  DNS Recon
 
 ## 📊 Tabel Jenis Catatan DNS
 

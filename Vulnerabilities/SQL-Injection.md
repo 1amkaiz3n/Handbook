@@ -1,5 +1,5 @@
 
-# SQL Injection Methodology
+# SQL Injection 
 
 ## Endpoint Discovery
 

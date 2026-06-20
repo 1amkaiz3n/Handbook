@@ -1,4 +1,4 @@
-# 📌 Methodology ASN & Network Recon (Infrastructure Mapping)
+# 📌  ASN & Network Recon (Infrastructure Mapping)
 
 ## Tools 
   - unfurl
