@@ -1,6 +1,13 @@
 # SQLMap
 
 ## 
+
+```bash
+sqlmap -u "https://target.com?page="  --tamper=space2comment,between,randomcase --level=5 --risk=3 --dbs
+```
+
+## 
+
 Ambil Request dari Burp simpan sebagai `login-req`,atau apapun bebas
 
 isi file :
